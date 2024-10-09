@@ -1,0 +1,35 @@
+[200~.idea/
+*.iml
+.classpath
+.project
+
+# Gradle build artifacts
+/build/
+.gradle/
+
+# Local environment settings
+local.properties
+
+# OS-generated files
+*.DS_Store
+Thumbs.db
+
+# Log files (consider keeping important logs)
+*.log
+/logs/ 
+
+# Compiled output (usually managed by build tools)
+out/
+target/
+
+# Editor backups
+*~
+*.swp
+
+# Docker artifacts (if you build images locally)
+docker-compose.yml.save
+*.gz
+*.tar
+
+# Project-specific generated files
+app.log 
