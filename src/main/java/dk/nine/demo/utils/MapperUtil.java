@@ -2,15 +2,16 @@ package dk.nine.demo.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dk.nine.demo.dto.PersonDto;
+import dk.nine.demo.dto.records.PersonDto;
 import dk.nine.demo.model.Person;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.util.Locale;
 
+
+// basicly just to see how manual json parsing and serialization works.
 @Component
 public class MapperUtil {
 
@@ -26,7 +27,6 @@ public class MapperUtil {
     public PersonDto toDto(Person person) {
         return new PersonDto(person.getId(), person.getFirstName(), person.getLastName(), person.getBirthday().toString());
     }
-
 
     public Person toEntity(PersonDto personDto) throws ParseException {
         return new Person(personDto.id(), personDto.firstname(), personDto.lastname(), dateFormatter.parse(personDto.birthday(), Locale.getDefault()));

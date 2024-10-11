@@ -1,6 +1,6 @@
 package dk.nine.demo.service;
 
-import dk.nine.demo.dto.PersonDto;
+import dk.nine.demo.dto.records.PersonDto;
 import dk.nine.demo.model.Person;
 import dk.nine.demo.repository.PersonRepository;
 import dk.nine.demo.utils.MapperUtil;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PersonService {

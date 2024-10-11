@@ -1,0 +1,1 @@
+org.springframework.context.ApplicationListener=dk.nine.demo.init.EnvironmentVariableLogger
