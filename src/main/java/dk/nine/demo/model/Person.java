@@ -1,30 +1,29 @@
 package dk.nine.demo.model;
 
 
-import de.huxhorn.sulky.ulid.ULID;
-import dk.nine.demo.singletons.UlidGenerator;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDate;
 
+
+//import java.time.LocalDate;
+@Data
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "person")
 public class Person {
 
-    private String id;
-    @Getter
-    @Setter
-    private String name;
-    @Setter
-    @Getter
-    private String birthday; // You can also use LocalDate if preferred
-
-    // Constructors, getters, and setters
-    public Person() {}
-
-    public Person(String name, String birthday) {
-        this.name = name;
-        this.birthday = birthday;
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private LocalDate birthday;
 
 
 }
+

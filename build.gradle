@@ -41,8 +41,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'org.postgresql:postgresql'
+//    implementation 'org.liquibase:liquibase-core'
     implementation group: 'de.huxhorn.sulky', name: 'de.huxhorn.sulky.ulid', version: '8.3.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.18.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.0'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
@@ -50,10 +57,10 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.named('test') {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
-}
+//tasks.named('test') {
+//    outputs.dir snippetsDir
+//    useJUnitPlatform()
+//}
 
 tasks.named('asciidoctor') {
     inputs.dir snippetsDir

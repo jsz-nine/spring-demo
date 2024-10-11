@@ -1,4 +1,4 @@
-[200~.idea/
+.idea/
 *.iml
 .classpath
 .project
@@ -33,3 +33,4 @@ docker-compose.yml.save
 
 # Project-specific generated files
 app.log 
+/.idea/
