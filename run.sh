@@ -69,7 +69,7 @@ docker build -t spring-demo .
 echo "Starting new Spring Boot container..."
 docker run \
   --net=DB_net \
-  -p 8085:8080 \
+  -p 8080:8080 \
   --name spring-demo \
   -e SPRING_DATASOURCE_PASSWORD="$POSTGRES_PASSWORD" \
   -d \
@@ -80,6 +80,8 @@ docker run \
   --health-retries=3 \
   spring-demo
 
+
+echo "swager: http://localhost:8080/swagger-ui.html"
 
 
 
