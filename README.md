@@ -1,4 +1,5 @@
 # Spring Demo 
+
 This project is a sandbox for implementing the most popular and commonly used springboot libraries, 
 with the purpose of getting to practice and get an understanding of how springboot is used idiomatically.
 
@@ -18,6 +19,7 @@ with the purpose of getting to practice and get an understanding of how springbo
 
 
 ## How to **RUN**
+
 This project is dockerized using the builder-runner-pattern in order to increase the compatibility from building 
 the application, to actually run it on any PC that has docker installed (not taking CPU architecture into consideration)
 
@@ -37,6 +39,7 @@ so check out ***Relevant commands***, to make sure everything is running as it s
 
 
 **Endpoints**
+
 This service has built-in openapi/swagger generation, is exposed on these URI's 
  - http://localhost:8085/swagger-ui/index.html
  - http://localhost:8080/openapi
@@ -47,6 +50,7 @@ that are pre-implemented in springboot
 
 
 **Recommended**
+
 Take a look into the run.sh, in order to get an understanding of what is actually being executed on your machine.
 The script contains three applications being run. 
 
@@ -57,6 +61,7 @@ initializes and provisions the tables and data.
 
 
 **Relevant commands**
+
 It should be re-runnable and clean up after itself, on every run, but it NO GUARANTEE
 check your docker environment ```docker ps ``` & ``` docker images ``` to make sure everything is running or 
 shutdown properly.
