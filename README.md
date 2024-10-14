@@ -67,3 +67,7 @@ check your docker environment ```docker ps ``` & ``` docker images ``` to make s
 shutdown properly.
 
 
+** Sources for Exam prepration **
+
+https://github.com/davidarchanjo/spring-certified-developer-study-guide?tab=readme-ov-file#3-rest-concepts- 
+
