@@ -3,13 +3,16 @@ package dk.nine.demo.service;
 import dk.nine.demo.dto.lomboks.CompanyDto;
 import dk.nine.demo.model.Company;
 import dk.nine.demo.repository.CompanyRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class CompanyService {
     private final CompanyRepository companyRepository;
@@ -32,7 +35,11 @@ public class CompanyService {
 
     public List<CompanyDto> getAllCompanies() {
         return companyRepository.findAll().stream()
-                .map(company -> modelMapper.map(company, CompanyDto.class))
+                .map(company ->
+                {
+                    log.debug(String.format("company: %s, id: %s", company.getName(), company.getUuid()));
+                    return modelMapper.map(company, CompanyDto.class);
+                })
                 .collect(Collectors.toList());
     }
 
