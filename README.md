@@ -24,9 +24,10 @@ the application, to actually run it on any PC that has docker installed (not tak
 this bash script has been tested on Linux and MacOS (Not windows, as of yet)
 ```
 chmod +x run.sh
-./run.sh
- **or**
- 
+./run.sh 
+```
+ ## or
+ ```
 bash ./run.sh
  
 ```                                                           
