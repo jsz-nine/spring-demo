@@ -41,12 +41,12 @@ so check out ***Relevant commands***, to make sure everything is running as it s
 **Endpoints**
 
 This service has built-in openapi/swagger generation, is exposed on these URI's 
- - http://localhost:8085/swagger-ui/index.html
+ - http://localhost:8080/swagger-ui/index.html
  - http://localhost:8080/openapi
 
 The run script is testing if the actual webserver is up and running using the actuator endpoints, 
 that are pre-implemented in springboot
- - http://localhost:8085/actuator/health
+ - http://localhost:8080/actuator/health
 
 
 **Recommended**
@@ -67,7 +67,7 @@ check your docker environment ```docker ps ``` & ``` docker images ``` to make s
 shutdown properly.
 
 
-** Sources for Exam prepration **
+**Sources for Exam prepration**
 
 https://github.com/davidarchanjo/spring-certified-developer-study-guide?tab=readme-ov-file#3-rest-concepts- 
 

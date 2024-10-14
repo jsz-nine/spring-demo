@@ -18,6 +18,14 @@ public class MapperUtil {
     private final ObjectMapper objectMapper;
     private final LocalDateFormatter dateFormatter;
 
+    @Mapper
+    public interface CustomModelMapper {
+
+    }
+
+
+    Immutable.Builder mapToBuilder(Source source);
+
     @Autowired
     public MapperUtil(ObjectMapper objectMapper, LocalDateFormatter dateFormatter) {
         this.objectMapper = objectMapper;

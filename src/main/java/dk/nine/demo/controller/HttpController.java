@@ -1,16 +1,12 @@
 package dk.nine.demo.controller;
 
-import dk.nine.demo.dto.records.PersonDto;
 import dk.nine.demo.exception.CustomExceptions;
-import dk.nine.demo.service.PersonService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -30,6 +26,7 @@ public class HttpController {
         numberOfRequests.incrementAndGet();
 
         String output = String.format("%s \n %s!, requestNo: \n %s", message, name, numberOfRequests.get());
+        log.debug(output);
         switch (numberOfRequests.get() % 10) {
             case 1 ->
                     throw new CustomExceptions.RequestNumberOneException(String.format("This was a first request \n %s", output));
@@ -54,7 +51,7 @@ public class HttpController {
         }
         ;
 
-        log.debug(output);
+
         return output;
     }
 }

@@ -5,14 +5,14 @@ echo "Please enter the PostgreSQL password:"
 read -s POSTGRES_PASSWORD  # -s flag to hide input for security
 
 # Stop and remove the PostgreSQL container if it is running
-if [ "$(docker ps -q -f name=DB)" ]; then
+if [ "$(docker ps -a -f name=DB)" ]; then
     echo "Stopping and removing existing PostgreSQL container..."
     docker stop DB
     docker rm DB
 fi
 
 # Stop and remove the Spring Boot container if it is running
-if [ "$(docker ps -q -f name=spring-demo)" ]; then
+if [ "$(docker ps -a -f name=spring-demo)" ]; then
     echo "Stopping and removing existing Spring Boot container..."
     docker kill spring-demo
     docker rm spring-demo
