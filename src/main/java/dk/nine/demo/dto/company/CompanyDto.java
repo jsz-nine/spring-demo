@@ -1,4 +1,4 @@
-package dk.nine.demo.dto.lomboks;
+package dk.nine.demo.dto.company;
 
 import lombok.*;
 

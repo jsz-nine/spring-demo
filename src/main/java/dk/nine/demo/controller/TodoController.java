@@ -1,9 +1,6 @@
 package dk.nine.demo.controller;
 
-import dk.nine.demo.dto.lomboks.TodoDto;
-import dk.nine.demo.dto.records.CreateTodosDto;
-import dk.nine.demo.dto.records.TodosDto;
-import dk.nine.demo.dto.records.TodosDto.TodosDtoBuilder;
+import dk.nine.demo.dto.lomboks.todo.TodoDto;
 import dk.nine.demo.service.TodosService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

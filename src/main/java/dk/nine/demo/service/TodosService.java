@@ -1,15 +1,14 @@
 package dk.nine.demo.service;
 
-import dk.nine.demo.dto.lomboks.TodoDto;
-import dk.nine.demo.dto.records.TodosDto;
+import dk.nine.demo.dto.lomboks.todo.TodoDto;
+import dk.nine.demo.dto.lomboks.todo.TodosDto;
 import dk.nine.demo.model.Todos;
 import dk.nine.demo.repository.CompanyRepository;
 import dk.nine.demo.repository.todos.TodoRepository;
 import dk.nine.demo.repository.todos.TodosRepository;
-import dk.nine.demo.utils.MapperUtil;
+import dk.nine.demo.view.TodoMapper;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -28,30 +27,30 @@ public class TodosService {
 
     private final TodosRepository todosRepo;
     private final TodoRepository todoRepo;
-    private final MapperUtil mapperUtil;
     private final TodosRepository todosRepository;
     private final CompanyRepository companyRepository;
+    private final TodoMapper todoMapper;
 
     @Autowired
-    public TodosService(TodosRepository todosRepo, TodoRepository todoRepo, MapperUtil mapperUtil, TodosRepository todosRepository, CompanyRepository companyRepository) {
+    public TodosService(TodosRepository todosRepo, TodoRepository todoRepo, TodosRepository todosRepository, CompanyRepository companyRepository, TodoMapper todoMapper) {
         this.todosRepo = todosRepo;
         this.todoRepo = todoRepo;
-        this.mapperUtil = mapperUtil;
         this.todosRepository = todosRepository;
         this.companyRepository = companyRepository;
+        this.todoMapper = todoMapper;
     }
 
 
     public List<TodosDto> getAllTodosLists() {
         return todosRepository.findAll()
                 .stream()
-                .map(todos -> mapperUtil.map(todos, TodosDto.class))
+                .map(todoMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public List<TodosDto> getTodosListsByTitle(String searchQuery) {
         return todosRepository.findByTitleContainsIgnoreCaseOrderByCreatedAt(searchQuery).stream()
-                .map(todos -> mapperUtil.map(todos, TodosDto.class))
+                .map(todoMapper::toDto)
                 .collect(Collectors.toList());
 
     }
@@ -59,25 +58,14 @@ public class TodosService {
     public TodosDto getATodos(String uuid) {
         return todosRepository.findById(UUID.fromString(uuid))
                 .stream()
-                .map(todo -> mapperUtil.map(todo, TodosDto.class))
+                .map(todoMapper::toDto)
                 .toList().getFirst();
     }
 
     public TodosDto createTodosList(TodosDto todosDto) {
         log.debug("created TodosDto {} ", todosDto.toString());
-        Todos createdTodos = todosRepository.save(
-                mapperUtil.map(todosDto, Todos.class)
-        );
+        Todos createdTodos = todosRepository.save(todoMapper.toEntity(todosDto));
 
-        log.debug("created Todos {} ", createdTodos);
-        TodosDto builtTodosDto = new TodosDto.TodosDtoBuilder()
-                .title(createdTodos.getTitle())
-                .uuid(createdTodos.getUuid())
-                .createdAt(createdTodos.getCreatedAt())
-                .description(createdTodos.getDescription())
-                .build();
-        log.debug("built TodosDto {}", builtTodosDto);
-        return builtTodosDto;
     }
 
     @Transactional

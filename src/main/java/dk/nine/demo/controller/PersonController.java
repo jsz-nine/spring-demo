@@ -1,7 +1,5 @@
 package dk.nine.demo.controller;
 
-import dk.nine.demo.dto.records.PersonDto;
-import dk.nine.demo.exception.CustomExceptions;
 import dk.nine.demo.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @RestController

@@ -1,57 +1,61 @@
 package dk.nine.demo.service;
 
-import dk.nine.demo.dto.records.PersonDto;
+import dk.nine.demo.dto.person.PersonDto;
 import dk.nine.demo.model.Person;
 import dk.nine.demo.repository.PersonRepository;
-import dk.nine.demo.utils.MapperUtil;
+import dk.nine.demo.view.PersonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonService {
 
     private final PersonRepository personRepository;
-    private final MapperUtil mapperUtil;
+
+    private final PersonMapper personMapper;
 
 
     @Autowired
-    public PersonService(PersonRepository personRepository, MapperUtil mapperUtil) {
+    public PersonService(PersonRepository personRepository, PersonMapper personMapper) {
         this.personRepository = personRepository;
-        this.mapperUtil = mapperUtil;
+        this.personMapper = personMapper;
     }
 
     public List<PersonDto> getAllPeople() {
         return personRepository.findAll().stream()
-                .map(mapperUtil::toDto)
+                .map(personMapper::toDto)
                 .toList();
     }
 
     public PersonDto getPersonById(Long id) {
         return personRepository.findById(id)
-                .map(mapperUtil::toDto)
+                .map(personMapper::toDto)
                 .orElse(null);
     }
 
     public PersonDto createPerson(PersonDto personDto) throws ParseException {
-        Person person = mapperUtil.toEntity(personDto);
-        Person savedPerson = personRepository.save(person);
-        return mapperUtil.toDto(savedPerson);
+        return personMapper.toDto(personRepository.save(personMapper.fromDto(personDto)));
     }
 
     public PersonDto updatePerson(Long id, PersonDto updatedPersonDto) {
-        Person existingPerson = personRepository.findById(id).orElse(null);
-        if (existingPerson != null) {
-            existingPerson.setFirstName(updatedPersonDto.firstname());
-            existingPerson.setLastName(updatedPersonDto.lastname());
-            existingPerson.setBirthday(LocalDate.parse(updatedPersonDto.birthday()));
-            return mapperUtil.toDto(personRepository.save(existingPerson));
+        Optional<Person> existingPerson = personRepository.findById(id);
+        Person updatedPerson = personMapper.fromDto(updatedPersonDto);
+        if (existingPerson.isPresent()) {
+            Person personToUpdate = existingPerson.get();
+            personToUpdate.setFirstName(updatedPerson.getFirstName());
+            personToUpdate.setLastName(updatedPerson.getLastName());
+            personToUpdate.setBirthday(updatedPerson.getBirthday());
+            return personMapper.toDto(personRepository.save(personToUpdate));
+        } else {
+            throw new IllegalArgumentException("Person not found with ID: " + id);
+            // Or handle the not-found case differently (e.g., return null)
         }
-        return null;
     }
+
 
     public void deletePerson(Long id) {
         personRepository.deleteById(id);
