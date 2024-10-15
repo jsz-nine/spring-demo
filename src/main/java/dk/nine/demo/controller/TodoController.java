@@ -28,22 +28,30 @@ public class TodoController {
     }
 
     @GetMapping("/todos")
-    public List<TodosDto> AllTodos() {
+    public List<TodosDto> AllTodoLists() {
         return todosService.getAllTodosLists();
     }
 
     @GetMapping("/todos/{uuid}")
-    public ResponseEntity<TodosDto> getTodoById(@PathVariable UUID uuid) {
+    public ResponseEntity<TodosDto> getTodoListByUuid(@PathVariable UUID uuid) {
         return new ResponseEntity<TodosDto>(todosService.getATodos(uuid.toString()), HttpStatus.OK);
     }
 
     @PostMapping("/todos")
-    public TodosDto createTodo(@RequestBody CreateTodoListDto createTodosDto) {
+    public TodosDto createTodoList(@RequestBody CreateTodoListDto createTodosDto) {
         log.debug("creating TodoList {}", createTodosDto);
         TodosDto todosList = todosService.createTodosList(createTodosDto);
         log.debug("Creation complete {}", todosList);
         return todosList;
     }
+    @PostMapping("/todos/{uuid}/todo")
+    public TodosDto createTodo(@RequestBody TodoDto todoDto, @PathVariable UUID uuid) {
+        log.debug("creating Todo {}, for TodoList: {}", todoDto, uuid);
+        TodosDto todosList = todosService.createTodo(uuid, todoDto);
+        log.debug("Creation complete {}", todosList);
+        return todosList;
+    }
+
 
     @GetMapping("/todos/search/{query}")
     public List<TodosDto> searchForTodoLists(@PathVariable String query) {
@@ -56,7 +64,7 @@ public class TodoController {
     }
 
     @PutMapping("/todos")
-    public TodosDto updateTodoById(@RequestBody TodosDto todosDto) {
+    public TodosDto updateTodoList(@RequestBody TodosDto todosDto) {
         log.debug("attempting to update TodoList with uuid: {}", todosDto.getUuid());
         TodosDto updatedTodosList = todosService.updateTodosList(todosDto);
         log.debug("after update {}", updatedTodosList.toString());
@@ -79,7 +87,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/todos/{uuid}")
-    public Boolean deleteTodoById(@PathVariable String uuid) {
+    public Boolean deleteTodoListByUuid(@PathVariable String uuid) {
         log.debug("Received request to delete Todo with UUID: {}", uuid);
 
         try {

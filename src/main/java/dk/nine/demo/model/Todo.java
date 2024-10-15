@@ -1,5 +1,6 @@
 package dk.nine.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +21,12 @@ public class Todo {
     private Long id;
     private String title;
     private String description;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate createdAt;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate dueDate;
-    private Boolean completed;
+    @Builder.Default
+    private Boolean completed = Boolean.FALSE;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

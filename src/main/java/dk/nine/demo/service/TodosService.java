@@ -11,13 +11,16 @@ import dk.nine.demo.repository.todos.TodoRepository;
 import dk.nine.demo.repository.todos.TodosRepository;
 import dk.nine.demo.view.TodoMapper;
 import dk.nine.demo.view.TodosMapper;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TodosService {
 
     private final TodosRepository todosRepo;
@@ -59,18 +63,15 @@ public class TodosService {
 
     public TodosDto createTodosList(CreateTodoListDto createTodoListDto) {
 
-//        Todos todos = Todos.builder()
-//                .createdAt(LocalDate.now()) // Setting createdAt
-//                .todos(new ArrayList<Todo>()) // Initializing with an empty list of TodoDto
-//                .uuid(UUID.randomUUID()) // Setting UUID
-//                .title(createTodoListDto.getTitle()) // Setting title from DTO
-//                .description(createTodoListDto.getDescription()) // Setting description from DTO
-//                .build();
-
-        Todos todos = new Todos(UUID.randomUUID(), createTodoListDto.getTitle(), createTodoListDto.getDescription(), new ArrayList<Todo>(), LocalDate.now(), null);
+        Todos todos = Todos.builder()
+                .createdAt(LocalDate.now()) // Setting createdAt
+                .todoList(new ArrayList<Todo>()) // Initializing with an empty list of TodoDto
+                .uuid(UUID.randomUUID()) // Setting UUID
+                .title(createTodoListDto.getTitle()) // Setting title from DTO
+                .description(createTodoListDto.getDescription()) // Setting description from DTO
+                .build();
 
         log.debug("todos {}", todos);
-
         Todos save = todosRepository.save(todos);
         log.debug("save {}", save);
         return todosMapper.toDto(save);
@@ -106,6 +107,35 @@ public class TodosService {
             log.error(e.getLocalizedMessage());
         }
         return todosRepository.findById(uuid).isEmpty();
+    }
+
+
+    /*
+    public Todo createTodo(Todo todo, Long todoListId) {
+        // 1. Retrieve the Todos entity from the database using the todoListId
+        Todos todos = todosRepository.findById(todoListId)
+                .orElseThrow(() -> new EntityNotFoundException("Todos not found with id: " + todoListId));
+
+        // 2. Set the retrieved Todos entity to the 'todoList' field of the new Todo
+        todo.setTodoList(todos);
+
+        // 3. Save the new Todo entity
+        return todoRepository.save(todo);
+    }
+
+     */
+    public TodosDto createTodo(UUID uuid, TodoDto todoDto) {
+        Todos todos = todosRepository.findById(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Todos not found with id: " + uuid));
+        Todo todo = todoMapper.toEntity(todoDto);
+        todo.setTodoList(todos);
+
+        todoRepo.save(todo);
+
+        return todosRepository.findById(uuid)
+                .map(todosMapper::toDto)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve updated Todos"));
+
     }
 
     public TodosDto patchTodosList(UUID uuid, TodoDto todoDto) throws ChangeSetPersister.NotFoundException {

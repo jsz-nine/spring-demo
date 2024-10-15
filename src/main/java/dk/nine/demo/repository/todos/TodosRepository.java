@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TodosRepository extends JpaRepository<Todos, UUID> {
-import java.util.Optional;
     List<Todos> findByTitleContainsIgnoreCaseOrderByCreatedAt(String title);
 
 }

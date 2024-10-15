@@ -1,5 +1,6 @@
 package dk.nine.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
@@ -30,7 +31,9 @@ public class Todos {
     @Builder.Default
     private List<Todo> todoList = new ArrayList<Todo>(); // Initialize to avoid null issues
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate createdAt;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate completedAt;
 
     @PrePersist
