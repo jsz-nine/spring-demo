@@ -1,5 +1,6 @@
 package dk.nine.demo.controller;
 
+import dk.nine.demo.dto.person.PersonDto;
 import dk.nine.demo.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;

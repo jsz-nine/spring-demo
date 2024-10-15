@@ -3,28 +3,14 @@ plugins {
     id 'org.springframework.boot' version '3.3.4'
     id 'io.spring.dependency-management' version '1.1.6'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
-
 }
 
-version = '0.0.1-SNAPSHOT'
 group = 'dk.nine.demo'
+version = '0.0.1-SNAPSHOT'
 
-tasks.jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE // Exclude duplicates
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(23)
-    }
-}
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
     }
 }
 
@@ -33,35 +19,58 @@ repositories {
 }
 
 ext {
-    set('snippetsDir', file("build/generated-snippets"))
+    snippetsDir = file("build/generated-snippets")
 }
 
 dependencies {
+    // Spring Boot Starters
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // OpenAPI for Spring Boot
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+    // Jackson Datatype for Java 8 Date/Time API
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.0'
-    implementation 'org.mapstruct:mapstruct-processor:1.6.2'
-    implementation 'org.mapstruct:mapstruct:1.6.2'
-    implementation 'org.postgresql:postgresql:42.7.4'
-    implementation 'org.modelmapper:modelmapper:3.2.1'
-    implementation group: 'de.huxhorn.sulky', name: 'de.huxhorn.sulky.ulid', version: '8.3.0'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.0'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.18.0'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.0'
+
+    // MapStruct
+    implementation 'org.mapstruct:mapstruct:1.6.2' // MapStruct library
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2' // MapStruct processor
+
+    // Lombok for boilerplate code reduction
     compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Other Dependencies
+    implementation 'org.postgresql:postgresql:42.7.4'
+    implementation 'org.modelmapper:modelmapper:3.2.1' // If still needed
+    implementation group: 'de.huxhorn.sulky', name: 'de.huxhorn.sulky.ulid', version: '8.3.0'
+
+    // Spring Boot DevTools for development
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Testing Dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-Amapstruct.defaultComponentModel=spring']
 }
 
 tasks.named('asciidoctor') {
     inputs.dir snippetsDir
     dependsOn test
+}
+
+tasks.jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE // Exclude duplicates
 }

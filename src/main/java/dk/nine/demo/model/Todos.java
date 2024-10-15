@@ -1,13 +1,11 @@
 package dk.nine.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Setter
+@Getter
 @Table(schema = "internal", name = "todos")
 public class Todos {
 
@@ -25,8 +25,11 @@ public class Todos {
     private UUID uuid; // UUID as the primary key
     private String title;
     private String description;
-    @OneToMany(mappedBy = "todos", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Todo> todos;
+
+    @OneToMany(mappedBy = "todoList", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Todo> todoList = new ArrayList<Todo>(); // Initialize to avoid null issues
+
     private LocalDate createdAt;
     private LocalDate completedAt;
 

@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Table(schema = "internal", name = "todo")
-
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +25,11 @@ public class Todo {
     private Boolean completed;
 
 
-    @ManyToOne(fetch = FetchType.LAZY) // You can adjust FetchType as needed
-    @JoinColumn(name = "todos_uuid")
-    private Todos todos;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "todos_uuid", nullable = false) // Foreign key column
+    private Todos todoList; // Reference to Todos
+
+
 
 }
 

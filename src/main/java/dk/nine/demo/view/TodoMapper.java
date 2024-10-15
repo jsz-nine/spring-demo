@@ -1,13 +1,13 @@
 package dk.nine.demo.view;
 
-import dk.nine.demo.dto.lomboks.todo.TodosDto;
-import dk.nine.demo.model.Todos;
+import dk.nine.demo.dto.todo.TodoDto;
+import dk.nine.demo.model.Todo;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface TodoMapper {
 
-TodosDto toDto(Todos todos);
+    TodoDto toDto(Todo todo);
 
-Todos toEntity(TodosDto todosDto);
+    Todo toEntity(TodoDto todoDto);
 }

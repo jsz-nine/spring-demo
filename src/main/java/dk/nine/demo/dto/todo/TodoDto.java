@@ -4,6 +4,7 @@ package dk.nine.demo.dto.todo;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Builder

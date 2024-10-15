@@ -4,6 +4,9 @@ import dk.nine.demo.dto.person.PersonDto;
 import dk.nine.demo.model.Person;
 import dk.nine.demo.repository.PersonRepository;
 import dk.nine.demo.view.PersonMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,18 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class PersonService {
 
     private final PersonRepository personRepository;
-
     private final PersonMapper personMapper;
 
-
-    @Autowired
-    public PersonService(PersonRepository personRepository, PersonMapper personMapper) {
-        this.personRepository = personRepository;
-        this.personMapper = personMapper;
-    }
 
     public List<PersonDto> getAllPeople() {
         return personRepository.findAll().stream()

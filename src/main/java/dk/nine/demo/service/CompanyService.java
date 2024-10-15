@@ -3,7 +3,9 @@ package dk.nine.demo.service;
 import dk.nine.demo.dto.company.CompanyDto;
 import dk.nine.demo.repository.CompanyRepository;
 import dk.nine.demo.view.CompanyMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,16 +14,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class CompanyService {
-    private final CompanyRepository companyRepository;
 
+    private final CompanyRepository companyRepository;
     private final CompanyMapper companyMapper;
 
-    @Autowired
-    public CompanyService(CompanyRepository companyRepository, CompanyMapper companyMapper) {
-        this.companyRepository = companyRepository;
-        this.companyMapper = companyMapper;
-    }
 
     public CompanyDto createCompany(CompanyDto companyDto) {
         return companyMapper.toDto(companyRepository.save(companyMapper.toEntity(companyDto)));

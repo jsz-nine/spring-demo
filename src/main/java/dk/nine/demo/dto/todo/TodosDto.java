@@ -12,11 +12,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
+@Getter
 public class TodosDto {
     private String title;
     private String description;
     private UUID uuid;
-    private List<TodoDto> todoDtos;
+    private List<TodoDto> todoList;
     private LocalDate createdAt;
     private LocalDate completedAt;
 }
