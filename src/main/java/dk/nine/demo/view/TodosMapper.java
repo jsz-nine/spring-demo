@@ -1,17 +1,10 @@
 package dk.nine.demo.view;
 
-import dk.nine.demo.dto.todo.TodoDto;
 import dk.nine.demo.dto.todo.TodosDto;
-import dk.nine.demo.model.Todo;
 import dk.nine.demo.model.Todos;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring", uses = {TodoMapper.class})

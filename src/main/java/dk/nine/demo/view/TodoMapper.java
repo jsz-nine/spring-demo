@@ -4,14 +4,6 @@ import dk.nine.demo.dto.todo.TodoDto;
 import dk.nine.demo.model.Todo;
 import org.mapstruct.Mapper;
 
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
-
-import java.util.ArrayList;
-import java.util.List;
-
 @Mapper(componentModel = "spring")
 public interface TodoMapper extends BaseMapper<Long, TodoDto, Todo> {
 
@@ -25,7 +17,6 @@ public interface TodoMapper extends BaseMapper<Long, TodoDto, Todo> {
                 .completed(todo.getCompleted())
                 .build();
     }
-
 
 
     default Todo toModel(TodoDto todoDto) {
