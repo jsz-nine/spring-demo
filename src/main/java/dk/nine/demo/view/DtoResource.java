@@ -1,7 +1,9 @@
 package dk.nine.demo.view;
 
-public interface BasePersistentItem<I> {
-    I getId();
-    void setId(I id);
-}
+public interface DtoResource<I> {
 
+    I getId();
+
+    void setId(I id);
+
+}

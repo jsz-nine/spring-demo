@@ -81,7 +81,7 @@ public class TodosService {
         existingTodoList.removeIf(todo -> updatedTodos.getTodoList().stream().noneMatch(updatedTodo -> updatedTodo.getId().equals(todo.getId())));
 
         for (TodoDto updatedTodoDto : updatedTodos.getTodoList()) {
-            Todo updatedTodo = todoMapper.toEntity(updatedTodoDto);
+            Todo updatedTodo = todoMapper.toModel(updatedTodoDto);
 
             // Check if the Todo exists or needs to be added
             existingTodoList.stream().filter(todo -> todo.getId().equals(updatedTodo.getId())).findFirst().ifPresentOrElse(existingTodo -> {
@@ -124,7 +124,7 @@ public class TodosService {
      */
     public TodosDto createTodo(UUID uuid, TodoDto todoDto) {
         Todos todos = todosRepository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("Todos not found with id: " + uuid));
-        Todo todo = todoMapper.toEntity(todoDto);
+        Todo todo = todoMapper.toModel(todoDto);
         todo.setTodoList(todos);
 
         todoRepo.save(todo);

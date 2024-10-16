@@ -1,7 +1,7 @@
 package dk.nine.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import dk.nine.demo.view.BasePersistentItem;
+import dk.nine.demo.view.ModelResource;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Table(schema = "internal", name = "todo")
-public class Todo implements BasePersistentItem<Long> {
+public class Todo implements ModelResource<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,7 +1,7 @@
 package dk.nine.demo.dto.todo;
 
 
-import dk.nine.demo.view.BaseResource;
+import dk.nine.demo.view.DtoResource;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Setter
 @Getter
-public class TodosDto implements BaseResource<UUID> {
+public class TodosDto implements DtoResource<UUID> {
     private String title;
     private String description;
     private UUID id;

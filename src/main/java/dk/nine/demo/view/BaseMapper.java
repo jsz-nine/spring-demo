@@ -1,10 +1,10 @@
 package dk.nine.demo.view;
 
-public interface BaseMapper<I, T extends BaseResource<I>, E extends BasePersistentItem<I>> {
+public interface BaseMapper<I, T extends DtoResource<I>, E extends ModelResource <I>> {
 
-    T toDto(E persistentItem);
+    T toDto(E modelResource);
 
-    E toEntity(T resource);
+    E toModel(T dtoResource);
 
-    void updateFromResource(T resource, E persistentItem);
+    void updateFromResource(T dtoResource, E modelResource);
 }
