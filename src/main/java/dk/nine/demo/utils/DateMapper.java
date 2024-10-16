@@ -1,10 +1,7 @@
 package dk.nine.demo.utils;
 
-import org.springframework.format.Formatter;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 
 public class DateMapper {

@@ -41,30 +41,21 @@ public class TodosService {
 
 
     public List<TodosDto> getAllTodosLists() {
-        return todosRepository.findAll()
-                .stream()
-                .map(todosMapper::toDto)
-                .collect(Collectors.toList());
+        return todosRepository.findAll().stream().map(todosMapper::toDto).collect(Collectors.toList());
     }
 
     public List<TodosDto> getTodosListsByTitle(String searchQuery) {
-        return todosRepository.findByTitleContainsIgnoreCaseOrderByCreatedAt(searchQuery).stream()
-                .map(todosMapper::toDto)
-                .collect(Collectors.toList());
+        return todosRepository.findByTitleContainsIgnoreCaseOrderByCreatedAt(searchQuery).stream().map(todosMapper::toDto).collect(Collectors.toList());
 
     }
 
     public TodosDto getATodos(String uuid) {
-        return todosRepository.findById(UUID.fromString(uuid))
-                .stream()
-                .map(todosMapper::toDto)
-                .toList().getFirst();
+        return todosRepository.findById(UUID.fromString(uuid)).stream().map(todosMapper::toDto).toList().getFirst();
     }
 
     public TodosDto createTodosList(CreateTodoListDto createTodoListDto) {
 
-        Todos todos = Todos.builder()
-                .createdAt(LocalDate.now()) // Setting createdAt
+        Todos todos = Todos.builder().createdAt(LocalDate.now()) // Setting createdAt
                 .todoList(new ArrayList<Todo>()) // Initializing with an empty list of TodoDto
                 .uuid(UUID.randomUUID()) // Setting UUID
                 .title(createTodoListDto.getTitle()) // Setting title from DTO
@@ -80,21 +71,28 @@ public class TodosService {
     @Transactional
     public TodosDto updateTodosList(TodosDto updatedTodos) {
         UUID uuid = updatedTodos.getUuid();
-        Todos existingTodos = todosRepository.findById(uuid)
-                .orElseThrow(() -> new IllegalArgumentException("Todos not found with UUID: " + uuid));
+        Todos existingTodos = todosRepository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("Todos not found with UUID: " + uuid));
 
         existingTodos.setTitle(updatedTodos.getTitle());
         existingTodos.setDescription(updatedTodos.getDescription());
 
-        existingTodos.getTodoList().clear();
+        List<Todo> existingTodoList = existingTodos.getTodoList();
 
-        if (updatedTodos.getTodoList() != null) {
-            List<Todo> updatedTodoList = updatedTodos.getTodoList().stream()
-                    .map(todoMapper::toEntity)
-                    .peek(todo -> todo.setTodoList(existingTodos))
-                    .collect(Collectors.toList());
+        existingTodoList.removeIf(todo -> updatedTodos.getTodoList().stream().noneMatch(updatedTodo -> updatedTodo.getId().equals(todo.getId())));
 
-            existingTodos.setTodoList(updatedTodoList);
+        for (TodoDto updatedTodoDto : updatedTodos.getTodoList()) {
+            Todo updatedTodo = todoMapper.toEntity(updatedTodoDto);
+
+            // Check if the Todo exists or needs to be added
+            existingTodoList.stream().filter(todo -> todo.getId().equals(updatedTodo.getId())).findFirst().ifPresentOrElse(existingTodo -> {
+                existingTodo.setTitle(updatedTodo.getTitle());
+                existingTodo.setDescription(updatedTodo.getDescription());
+                existingTodo.setDueDate(updatedTodo.getDueDate());
+                existingTodo.setCompleted(updatedTodo.getCompleted());
+            }, () -> {
+                updatedTodo.setTodoList(existingTodos);
+                existingTodoList.add(updatedTodo);
+            });
         }
 
         return todosMapper.toDto(todosRepository.save(existingTodos));
@@ -125,33 +123,28 @@ public class TodosService {
 
      */
     public TodosDto createTodo(UUID uuid, TodoDto todoDto) {
-        Todos todos = todosRepository.findById(uuid)
-                .orElseThrow(() -> new EntityNotFoundException("Todos not found with id: " + uuid));
+        Todos todos = todosRepository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("Todos not found with id: " + uuid));
         Todo todo = todoMapper.toEntity(todoDto);
         todo.setTodoList(todos);
 
         todoRepo.save(todo);
 
-        return todosRepository.findById(uuid)
-                .map(todosMapper::toDto)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve updated Todos"));
+        return todosRepository.findById(uuid).map(todosMapper::toDto).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve updated Todos"));
 
     }
 
     public TodosDto patchTodosList(UUID uuid, TodoDto todoDto) throws ChangeSetPersister.NotFoundException {
-        return todosRepository.findById(uuid)
-                .map(todos -> {
-                    todos.getTodoList().replaceAll(todoFromTodos -> {
-                        if (Objects.equals(todoFromTodos.getId(), todoDto.getId())) {
-                            BeanUtils.copyProperties(todoDto, todoFromTodos, "id");
-                            return todoFromTodos;
-                        } else {
-                            return todoFromTodos;
-                        }
-                    });
-                    return todosMapper.toDto(todos);
-                })
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
+        return todosRepository.findById(uuid).map(todos -> {
+            todos.getTodoList().replaceAll(todoFromTodos -> {
+                if (Objects.equals(todoFromTodos.getId(), todoDto.getId())) {
+                    BeanUtils.copyProperties(todoDto, todoFromTodos, "id");
+                    return todoFromTodos;
+                } else {
+                    return todoFromTodos;
+                }
+            });
+            return todosMapper.toDto(todos);
+        }).orElseThrow(ChangeSetPersister.NotFoundException::new);
     }
 
 
