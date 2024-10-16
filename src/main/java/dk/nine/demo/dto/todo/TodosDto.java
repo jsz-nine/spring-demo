@@ -18,11 +18,11 @@ import java.util.UUID;
 public class TodosDto implements DtoResource<UUID> {
     private String title;
     private String description;
-    private UUID id;
     @Builder.Default
-    private List<TodoDto> todoList = new ArrayList<TodoDto>(); // Initialize to avoid null issues
+    private UUID id = null;
+    @Builder.Default
+    private List<TodoDto> todoList = new ArrayList<TodoDto>();
     private LocalDate createdAt;
-    private LocalDate completedAt;
-
-
+    @Builder.Default
+    private LocalDate completedAt = null;
 }

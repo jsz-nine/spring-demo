@@ -9,4 +9,5 @@ import lombok.*;
 public class CreateTodoListDto {
     private String title;
     private String description;
+
 }

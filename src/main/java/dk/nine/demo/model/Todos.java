@@ -13,12 +13,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Setter
-@Getter
+@NoArgsConstructor
+@Entity
 @Table(schema = "internal", name = "todos")
 public class Todos implements ModelResource<UUID>, DtoResource<UUID> {
 

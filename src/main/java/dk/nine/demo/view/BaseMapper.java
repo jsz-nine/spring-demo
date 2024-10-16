@@ -6,5 +6,5 @@ public interface BaseMapper<I, T extends DtoResource<I>, E extends ModelResource
 
     E toModel(T dtoResource);
 
-    void updateFromResource(T dtoResource, E modelResource);
+//    void updateFromResource(T dtoResource, E modelResource);
 }

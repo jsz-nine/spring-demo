@@ -70,33 +70,61 @@ public class TodosService {
 
     @Transactional
     public TodosDto updateTodosList(TodosDto updatedTodos) {
+
+
         UUID uuid = updatedTodos.getId();
-        Todos existingTodos = todosRepository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("Todos not found with UUID: " + uuid));
+        Todos existingTodos = todosRepository.findById(uuid)
+                .orElseThrow(() -> new IllegalArgumentException("Todos not found with UUID: " + uuid));
 
-        existingTodos.setTitle(updatedTodos.getTitle());
-        existingTodos.setDescription(updatedTodos.getDescription());
-
-        List<Todo> existingTodoList = existingTodos.getTodoList();
-
-        existingTodoList.removeIf(todo -> updatedTodos.getTodoList().stream().noneMatch(updatedTodo -> updatedTodo.getId().equals(todo.getId())));
-
-        for (TodoDto updatedTodoDto : updatedTodos.getTodoList()) {
-            Todo updatedTodo = todoMapper.toModel(updatedTodoDto);
-
-            // Check if the Todo exists or needs to be added
-            existingTodoList.stream().filter(todo -> todo.getId().equals(updatedTodo.getId())).findFirst().ifPresentOrElse(existingTodo -> {
-                existingTodo.setTitle(updatedTodo.getTitle());
-                existingTodo.setDescription(updatedTodo.getDescription());
-                existingTodo.setDueDate(updatedTodo.getDueDate());
-                existingTodo.setCompleted(updatedTodo.getCompleted());
-            }, () -> {
-                updatedTodo.setTodoList(existingTodos);
-                existingTodoList.add(updatedTodo);
-            });
+        if (updatedTodos.getTitle() != null) {
+            existingTodos.setTitle(updatedTodos.getTitle());
+        }
+        if (updatedTodos.getDescription() != null) {
+            existingTodos.setDescription(updatedTodos.getDescription());
+        }
+        if (updatedTodos.getCompletedAt() != null) {
+            existingTodos.setCompletedAt(updatedTodos.getCompletedAt());
         }
 
+        if (updatedTodos.getTodoList() != null) {
+            List<Todo> existingTodoList = existingTodos.getTodoList();
+
+            existingTodoList.removeIf(todo ->
+                    updatedTodos.getTodoList().stream().noneMatch(updatedTodo -> updatedTodo.getId().equals(todo.getId()))
+            );
+
+            for (TodoDto updatedTodoDto : updatedTodos.getTodoList()) {
+                if (updatedTodoDto.getId() != null) {
+                    Todo updatedTodo = todoMapper.toModel(updatedTodoDto);
+
+                    existingTodoList.stream()
+                            .filter(todo -> todo.getId().equals(updatedTodo.getId()))
+                            .findFirst()
+                            .ifPresentOrElse(
+                                    existingTodo -> {
+                                        if (updatedTodo.getTitle() != null) {
+                                            existingTodo.setTitle(updatedTodo.getTitle());
+                                        }
+                                        if (updatedTodo.getDescription() != null) {
+                                            existingTodo.setDescription(updatedTodo.getDescription());
+                                        }
+                                        if (updatedTodo.getDueDate() != null) {
+                                            existingTodo.setDueDate(updatedTodo.getDueDate());
+                                        }
+                                        existingTodo.setCompleted(updatedTodo.getCompleted()); // Assuming isCompleted()
+                                    },
+                                    () -> {
+                                        // Add new Todo
+                                        updatedTodo.setTodoList(existingTodos);
+                                        existingTodoList.add(updatedTodo);
+                                    }
+                            );
+                }
+            }
+        }
         return todosMapper.toDto(todosRepository.save(existingTodos));
     }
+
 
     public Boolean removeTodosList(UUID uuid) {
         try {
@@ -108,20 +136,6 @@ public class TodosService {
     }
 
 
-    /*
-    public Todo createTodo(Todo todo, Long todoListId) {
-        // 1. Retrieve the Todos entity from the database using the todoListId
-        Todos todos = todosRepository.findById(todoListId)
-                .orElseThrow(() -> new EntityNotFoundException("Todos not found with id: " + todoListId));
-
-        // 2. Set the retrieved Todos entity to the 'todoList' field of the new Todo
-        todo.setTodoList(todos);
-
-        // 3. Save the new Todo entity
-        return todoRepository.save(todo);
-    }
-
-     */
     public TodosDto createTodo(UUID uuid, TodoDto todoDto) {
         Todos todos = todosRepository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("Todos not found with id: " + uuid));
         Todo todo = todoMapper.toModel(todoDto);
@@ -129,7 +143,7 @@ public class TodosService {
 
         todoRepo.save(todo);
 
-        return todosRepository.findById(uuid).map(todosMapper::toDto).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve updated Todos"));
+        return todosRepository.findById(uuid).map(todosMapper::toDto).orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve created Todo"));
 
     }
 
