@@ -1,6 +1,7 @@
 package dk.nine.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import dk.nine.demo.view.BasePersistentItem;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Table(schema = "internal", name = "todo")
-public class Todo {
+public class Todo implements BasePersistentItem<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,11 +29,9 @@ public class Todo {
     @Builder.Default
     private Boolean completed = Boolean.FALSE;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todos_uuid", nullable = false) // Foreign key column
     private Todos todoList; // Reference to Todos
-
 
 
 }

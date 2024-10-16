@@ -46,7 +46,7 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.6.2' // MapStruct library
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2' // MapStruct processor
 
-    // Lombok for boilerplate code reduction
+    // Lombok for boilerplate code reduction``
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
@@ -70,7 +70,7 @@ tasks.withType(JavaCompile).configureEach {
 
 tasks.named('asciidoctor') {
     inputs.dir snippetsDir
-    dependsOn test
+    dependsOn testc
 }
 
 tasks.jar {

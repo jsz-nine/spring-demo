@@ -58,14 +58,14 @@ public class TodoController {
         log.debug("searched for {}", query);
         List<TodosDto> todosListsByTitle = todosService.getTodosListsByTitle(query);
         log.debug("todoLists found [{}]", todosListsByTitle.size());
-        todosListsByTitle.forEach(element -> log.debug("uuid: {}, title: {}", element.getUuid(), element.getTitle()));
+        todosListsByTitle.forEach(element -> log.debug("uuid: {}, title: {}", element.getId(), element.getTitle()));
         return todosListsByTitle;
 
     }
 
     @PutMapping("/todos")
     public TodosDto updateTodoList(@RequestBody TodosDto todosDto) {
-        log.debug("attempting to update TodoList with uuid: {}", todosDto.getUuid());
+        log.debug("attempting to update TodoList with uuid: {}", todosDto.getId());
         TodosDto updatedTodosList = todosService.updateTodosList(todosDto);
         log.debug("after update {}", updatedTodosList.toString());
         return updatedTodosList;

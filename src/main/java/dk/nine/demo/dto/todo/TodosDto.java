@@ -1,7 +1,7 @@
 package dk.nine.demo.dto.todo;
 
 
-import dk.nine.demo.model.Todo;
+import dk.nine.demo.view.BaseResource;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -15,10 +15,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @Setter
 @Getter
-public class TodosDto {
+public class TodosDto implements BaseResource<UUID> {
     private String title;
     private String description;
-    private UUID uuid;
+    private UUID id;
     @Builder.Default
     private List<TodoDto> todoList = new ArrayList<TodoDto>(); // Initialize to avoid null issues
     private LocalDate createdAt;

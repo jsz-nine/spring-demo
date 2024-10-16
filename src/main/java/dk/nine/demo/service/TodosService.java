@@ -57,7 +57,7 @@ public class TodosService {
 
         Todos todos = Todos.builder().createdAt(LocalDate.now()) // Setting createdAt
                 .todoList(new ArrayList<Todo>()) // Initializing with an empty list of TodoDto
-                .uuid(UUID.randomUUID()) // Setting UUID
+                .id(UUID.randomUUID()) // Setting UUID
                 .title(createTodoListDto.getTitle()) // Setting title from DTO
                 .description(createTodoListDto.getDescription()) // Setting description from DTO
                 .build();
@@ -70,7 +70,7 @@ public class TodosService {
 
     @Transactional
     public TodosDto updateTodosList(TodosDto updatedTodos) {
-        UUID uuid = updatedTodos.getUuid();
+        UUID uuid = updatedTodos.getId();
         Todos existingTodos = todosRepository.findById(uuid).orElseThrow(() -> new IllegalArgumentException("Todos not found with UUID: " + uuid));
 
         existingTodos.setTitle(updatedTodos.getTitle());

@@ -2,6 +2,7 @@ package dk.nine.demo.dto.todo;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import dk.nine.demo.view.BaseResource;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class TodoDto {
+public class TodoDto implements BaseResource<Long> {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     private String title;

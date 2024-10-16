@@ -1,6 +1,8 @@
 package dk.nine.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import dk.nine.demo.view.BasePersistentItem;
+import dk.nine.demo.view.BaseResource;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
@@ -18,12 +20,12 @@ import java.util.UUID;
 @Setter
 @Getter
 @Table(schema = "internal", name = "todos")
-public class Todos {
+public class Todos implements BasePersistentItem<UUID>, BaseResource<UUID> {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @UuidGenerator
-    private UUID uuid; // UUID as the primary key
+    private UUID id; // UUID as the primary key
     private String title;
     private String description;
 
@@ -38,8 +40,8 @@ public class Todos {
 
     @PrePersist
     private void prePersist() {
-        if (this.uuid == null) {
-            this.uuid = UUID.randomUUID(); // Generate a new UUID
+        if (this.id == null) {
+            this.id = UUID.randomUUID(); // Generate a new UUID
         }
     }
 }
