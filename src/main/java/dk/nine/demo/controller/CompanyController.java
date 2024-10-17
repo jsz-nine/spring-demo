@@ -39,7 +39,7 @@ public class CompanyController {
 
     @GetMapping("/company/search/{query}")
     @ResponseStatus(HttpStatus.OK)
-    public Set<CompanyDto> findCompaniesByName(@PathVariable String query) {
+    public Set<CompanyDto> searchForCompanies(@PathVariable String query) {
         if (query == null || query.isEmpty()) {
             return Collections.emptySet();
         }

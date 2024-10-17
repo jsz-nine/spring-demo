@@ -3,6 +3,7 @@ package dk.nine.demo.controller;
 import dk.nine.demo.dto.person.PersonDto;
 import dk.nine.demo.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class PersonController {
 
     @PostMapping("/person/create")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PersonDto> createPerson(@RequestBody PersonDto personDto) {
+    public ResponseEntity<PersonDto> createPerson(@Valid @RequestBody PersonDto personDto) {
         try {
             PersonDto createdPerson = personService.createPerson(personDto);
             return new ResponseEntity<>(createdPerson, HttpStatus.CREATED);
