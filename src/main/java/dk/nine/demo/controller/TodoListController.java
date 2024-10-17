@@ -4,6 +4,7 @@ import dk.nine.demo.dto.todo.CreateTodoListDto;
 import dk.nine.demo.dto.todo.TaskDto;
 import dk.nine.demo.dto.todo.TodoListDto;
 import dk.nine.demo.service.TodosService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -56,7 +57,7 @@ public class TodoListController {
 
 
     @GetMapping("/todos/search/{query}")
-    public List<TodoListDto> searchForTodoLists(@PathVariable String query) {
+    public List<TodoListDto> searchForTodoLists(@Valid @PathVariable String query) {
         if (query.length() <= 2) {
             return new ArrayList<TodoListDto>();
         }
