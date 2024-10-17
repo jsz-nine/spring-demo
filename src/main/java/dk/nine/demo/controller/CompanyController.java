@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -35,6 +36,12 @@ public class CompanyController {
     }
 
 
+    @GetMapping("/company/search/{query}")
+    @ResponseStatus(HttpStatus.OK)
+    public Set<CompanyDto> findCompaniesByName(@PathVariable String query)
+    {
+        return companyService.findCompaniesByName(query);
+    }
     @GetMapping("/companies")
     @Operation(summary = "Get all companies", description = "Returns a list of persons")
     public List<CompanyDto> getAllCompanies() {

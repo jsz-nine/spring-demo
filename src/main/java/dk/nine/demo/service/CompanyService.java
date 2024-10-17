@@ -3,15 +3,14 @@ package dk.nine.demo.service;
 import dk.nine.demo.dto.company.CompanyDto;
 import dk.nine.demo.model.Company;
 import dk.nine.demo.repository.CompanyRepository;
-import dk.nine.demo.view.CompanyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -37,10 +36,8 @@ public class CompanyService {
     }
 
 
-    public CompanyDto getCompany(String name) {
-        return companyRepository.findByName(name)
-                .map(company -> modelMapper.map(company, CompanyDto.class))
-                .orElseThrow(
-                        () -> new RuntimeException("user not found!"));
+    public Set<CompanyDto> findCompaniesByName(String query) {
+        return companyRepository.findCompaniesByNameContainingIgnoreCase(query).stream()
+                .map(company -> modelMapper.map(company, CompanyDto.class)).collect(Collectors.toSet());
     }
 }
