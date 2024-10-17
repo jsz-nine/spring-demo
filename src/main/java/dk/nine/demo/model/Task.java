@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Table(schema = "internal", name = "todo")
-public class Todo implements ModelResource<Long> {
+public class Task implements ModelResource<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,7 +31,7 @@ public class Todo implements ModelResource<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todos_uuid", nullable = false) // Foreign key column
-    private Todos todoList; // Reference to Todos
+    private TodoList todoList; // Reference to Todos
 
 
 }

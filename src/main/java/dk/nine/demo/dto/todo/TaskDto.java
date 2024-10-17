@@ -1,7 +1,6 @@
 package dk.nine.demo.dto.todo;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import dk.nine.demo.view.DtoResource;
 import lombok.*;
 
@@ -12,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class TodoDto implements DtoResource<Long> {
+public class TaskDto implements DtoResource<Long> {
     private Long id;
     private String title;
     private String description;

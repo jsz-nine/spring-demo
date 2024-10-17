@@ -15,13 +15,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @Setter
 @Getter
-public class TodosDto implements DtoResource<UUID> {
+public class TodoListDto implements DtoResource<UUID> {
     private String title;
     private String description;
     @Builder.Default
     private UUID id = null;
     @Builder.Default
-    private List<TodoDto> todoList = new ArrayList<TodoDto>();
+    private List<TaskDto> todoList = new ArrayList<TaskDto>();
     private LocalDate createdAt;
     @Builder.Default
     private LocalDate completedAt = null;

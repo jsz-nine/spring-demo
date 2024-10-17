@@ -1,5 +1,6 @@
 package dk.nine.demo.dto.person;
 
+import dk.nine.demo.view.DtoResource;
 import lombok.*;
 
 @Data
@@ -7,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class PersonDto {
+public class PersonDto implements DtoResource<Long> {
     private Long id;
     private String firstname;
     private String lastname;

@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(schema = "internal", name = "todos")
-public class Todos implements ModelResource<UUID>, DtoResource<UUID> {
+public class TodoList implements ModelResource<UUID>, DtoResource<UUID> {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -29,7 +29,7 @@ public class Todos implements ModelResource<UUID>, DtoResource<UUID> {
 
     @OneToMany(mappedBy = "todoList", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<Todo> todoList = new ArrayList<Todo>(); // Initialize to avoid null issues
+    private List<Task> taskList = new ArrayList<Task>(); // Initialize to avoid null issues
 
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate createdAt;

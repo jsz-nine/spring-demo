@@ -1,8 +1,8 @@
 package dk.nine.demo.controller;
 
 import dk.nine.demo.dto.todo.CreateTodoListDto;
-import dk.nine.demo.dto.todo.TodoDto;
-import dk.nine.demo.dto.todo.TodosDto;
+import dk.nine.demo.dto.todo.TaskDto;
+import dk.nine.demo.dto.todo.TodoListDto;
 import dk.nine.demo.service.TodosService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,47 +16,47 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-public class TodoController {
+public class TodoListController {
 
     @Autowired
     private final TodosService todosService;
 
 
     @Autowired
-    public TodoController(TodosService todosService) {
+    public TodoListController(TodosService todosService) {
         this.todosService = todosService;
     }
 
     @GetMapping("/todos")
-    public List<TodosDto> AllTodoLists() {
+    public List<TodoListDto> AllTodoLists() {
         return todosService.getAllTodosLists();
     }
 
     @GetMapping("/todos/{uuid}")
-    public ResponseEntity<TodosDto> getTodoListByUuid(@PathVariable UUID uuid) {
-        return new ResponseEntity<TodosDto>(todosService.getATodos(uuid.toString()), HttpStatus.OK);
+    public ResponseEntity<TodoListDto> getTodoListByUuid(@PathVariable UUID uuid) {
+        return new ResponseEntity<TodoListDto>(todosService.getATodos(uuid.toString()), HttpStatus.OK);
     }
 
     @PostMapping("/todos")
-    public TodosDto createTodoList(@RequestBody CreateTodoListDto createTodosDto) {
+    public TodoListDto createTodoList(@RequestBody CreateTodoListDto createTodosDto) {
         log.debug("creating TodoList {}", createTodosDto);
-        TodosDto todosList = todosService.createTodosList(createTodosDto);
+        TodoListDto todosList = todosService.createTodosList(createTodosDto);
         log.debug("Creation complete {}", todosList);
         return todosList;
     }
-    @PostMapping("/todos/{uuid}/todo")
-    public TodosDto createTodo(@RequestBody TodoDto todoDto, @PathVariable UUID uuid) {
-        log.debug("creating Todo {}, for TodoList: {}", todoDto, uuid);
-        TodosDto todosList = todosService.createTodo(uuid, todoDto);
+    @PostMapping("/todos/{uuid}/task")
+    public TodoListDto createTodo(@RequestBody TaskDto taskDto, @PathVariable UUID uuid) {
+        log.debug("creating Todo {}, for TodoList: {}", taskDto, uuid);
+        TodoListDto todosList = todosService.createTodo(uuid, taskDto);
         log.debug("Creation complete {}", todosList);
         return todosList;
     }
 
 
     @GetMapping("/todos/search/{query}")
-    public List<TodosDto> searchForTodoLists(@PathVariable String query) {
+    public List<TodoListDto> searchForTodoLists(@PathVariable String query) {
         log.debug("searched for {}", query);
-        List<TodosDto> todosListsByTitle = todosService.getTodosListsByTitle(query);
+        List<TodoListDto> todosListsByTitle = todosService.getTodosListsByTitle(query);
         log.debug("todoLists found [{}]", todosListsByTitle.size());
         todosListsByTitle.forEach(element -> log.debug("uuid: {}, title: {}", element.getId(), element.getTitle()));
         return todosListsByTitle;
@@ -64,19 +64,19 @@ public class TodoController {
     }
 
     @PutMapping("/todos")
-    public TodosDto updateTodoList(@RequestBody TodosDto todosDto) {
-        log.debug("attempting to update TodoList with uuid: {}", todosDto.getId());
-        TodosDto updatedTodosList = todosService.updateTodosList(todosDto);
+    public TodoListDto updateTodoList(@RequestBody TodoListDto todoListDto) {
+        log.debug("attempting to update TodoList with uuid: {}", todoListDto.getId());
+        TodoListDto updatedTodosList = todosService.updateTodosList(todoListDto);
         log.debug("after update {}", updatedTodosList.toString());
         return updatedTodosList;
     }
 
     @PatchMapping("/todos/{uuid}")
-    public ResponseEntity<?> patchTodoById(@PathVariable String uuid, @RequestBody TodoDto todoDto) throws ChangeSetPersister.NotFoundException {
+    public ResponseEntity<?> patchTodoById(@PathVariable String uuid, @RequestBody TaskDto taskDto) throws ChangeSetPersister.NotFoundException {
         try {
-            TodosDto updatedTodosDto = todosService.patchTodosList(UUID.fromString(uuid), todoDto);
-            log.debug("Successfully updated Todo with UUID: {}. Updated data: {}", uuid, updatedTodosDto);
-            return new ResponseEntity<>(updatedTodosDto, HttpStatus.OK);
+            TodoListDto updatedTodoListDto = todosService.patchTodosList(UUID.fromString(uuid), taskDto);
+            log.debug("Successfully updated Todo with UUID: {}. Updated data: {}", uuid, updatedTodoListDto);
+            return new ResponseEntity<>(updatedTodoListDto, HttpStatus.OK);
         } catch (ChangeSetPersister.NotFoundException e) {
             log.warn("Todo with UUID: {} not found for patch operation.", uuid);
             return ResponseEntity.notFound().build();
