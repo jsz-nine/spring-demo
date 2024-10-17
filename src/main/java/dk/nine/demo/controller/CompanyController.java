@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -38,10 +39,13 @@ public class CompanyController {
 
     @GetMapping("/company/search/{query}")
     @ResponseStatus(HttpStatus.OK)
-    public Set<CompanyDto> findCompaniesByName(@PathVariable String query)
-    {
+    public Set<CompanyDto> findCompaniesByName(@PathVariable String query) {
+        if (query == null || query.isEmpty()) {
+            return Collections.emptySet();
+        }
         return companyService.findCompaniesByName(query);
     }
+
     @GetMapping("/companies")
     @Operation(summary = "Get all companies", description = "Returns a list of persons")
     public List<CompanyDto> getAllCompanies() {
