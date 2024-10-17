@@ -81,7 +81,7 @@ docker run \
   spring-demo
 
 
-echo "swager: http://localhost:8080/swagger-ui.html"
+echo "starting swagger: http://localhost:8080/swagger-ui.html"
 
 
 

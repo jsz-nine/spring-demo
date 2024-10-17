@@ -1,11 +1,13 @@
 package dk.nine.demo.service;
 
 import dk.nine.demo.dto.company.CompanyDto;
+import dk.nine.demo.model.Company;
 import dk.nine.demo.repository.CompanyRepository;
 import dk.nine.demo.view.CompanyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,25 +20,26 @@ import java.util.stream.Collectors;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
-    private final CompanyMapper companyMapper;
+    @Autowired
+    private final ModelMapper modelMapper;
 
 
     public CompanyDto createCompany(CompanyDto companyDto) {
-        return companyMapper.toDto(companyRepository.save(companyMapper.toEntity(companyDto)));
+        return modelMapper.map(companyRepository.save(modelMapper.map(companyDto, Company.class)), CompanyDto.class);
 
 
     }
 
     public List<CompanyDto> getAllCompanies() {
         return companyRepository.findAll().stream()
-                .map(companyMapper::toDto)
+                .map(company -> modelMapper.map(company, CompanyDto.class))
                 .collect(Collectors.toList());
     }
 
 
     public CompanyDto getCompany(String name) {
         return companyRepository.findByName(name)
-                .map(companyMapper::toDto)
+                .map(company -> modelMapper.map(company, CompanyDto.class))
                 .orElseThrow(
                         () -> new RuntimeException("user not found!"));
     }

@@ -3,6 +3,7 @@ package dk.nine.demo.config;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "dk.nine.demo.repository")
+@EntityScan(basePackages = "dk.nine.demo.model")
 public class DatabaseConfig {
     @Autowired
     Environment env;
