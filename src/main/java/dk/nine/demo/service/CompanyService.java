@@ -36,8 +36,8 @@ public class CompanyService {
     }
 
 
-    public Set<CompanyDto> findCompaniesByName(String query) {
+    public List<CompanyDto> findCompaniesByName(String query) {
         return companyRepository.findCompaniesByNameContainingIgnoreCase(query).stream()
-                .map(company -> modelMapper.map(company, CompanyDto.class)).collect(Collectors.toSet());
+                .map(company -> modelMapper.map(company, CompanyDto.class)).collect(Collectors.toList());
     }
 }

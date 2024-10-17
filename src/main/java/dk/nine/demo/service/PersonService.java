@@ -40,9 +40,9 @@ public class PersonService {
                 .orElse(null);
     }
 
-    public Set<PersonDto> findPersonsByName(String query) {
+    public List<PersonDto> findPersonsByName(String query) {
         return personRepository.findPersonByQuery(query)
-                .stream().map(person -> modelMapper.map(person,PersonDto.class)).collect(Collectors.toSet());
+                .stream().map(person -> modelMapper.map(person,PersonDto.class)).collect(Collectors.toList());
     }
 
     public PersonDto createPerson(PersonDto personDto) throws ParseException {

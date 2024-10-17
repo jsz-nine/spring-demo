@@ -39,12 +39,12 @@ public class PersonController {
     }
 
     @GetMapping("/person/search/{query}")
-    public Set<PersonDto> searchForPersons(@PathVariable String query) {
+    public List<PersonDto> searchForPersons(@PathVariable String query) {
         if (query.length() <= 2) {
-            return Collections.emptySet();
+            return Collections.emptyList();
         }
         log.debug("searched for {}", query);
-        Set<PersonDto> personFoundList = personService.findPersonsByName(query);
+        List<PersonDto> personFoundList = personService.findPersonsByName(query);
 
         return personFoundList;
 
