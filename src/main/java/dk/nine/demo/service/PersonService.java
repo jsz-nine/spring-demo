@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -36,6 +38,11 @@ public class PersonService {
         return personRepository.findById(id)
                 .map(person -> modelMapper.map(person, PersonDto.class))
                 .orElse(null);
+    }
+
+    public Set<PersonDto> findPersonsByName(String query) {
+        return personRepository.findPersonByQuery(query)
+                .stream().map(person -> modelMapper.map(person,PersonDto.class)).collect(Collectors.toSet());
     }
 
     public PersonDto createPerson(PersonDto personDto) throws ParseException {
