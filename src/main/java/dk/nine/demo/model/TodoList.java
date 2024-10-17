@@ -27,7 +27,7 @@ public class TodoList implements ModelResource<UUID>, DtoResource<UUID> {
     private String title;
     private String description;
 
-    @OneToMany(mappedBy = "todoList", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "taskList",  cascade = CascadeType.PERSIST , orphanRemoval = true)
     @Builder.Default
     private List<Task> taskList = new ArrayList<Task>(); // Initialize to avoid null issues
 

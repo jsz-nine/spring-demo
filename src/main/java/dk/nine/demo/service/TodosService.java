@@ -115,7 +115,7 @@ public class TodosService {
                                     },
                                     () -> {
                                         // Add new Todo
-                                        updatedTask.setTodoList(existingTodoList);
+                                        updatedTask.setTaskList(existingTodoList);
                                         existingTaskList.add(updatedTask);
                                     }
                             );
@@ -139,7 +139,7 @@ public class TodosService {
     public TodoListDto createTodo(UUID uuid, TaskDto taskDto) {
         TodoList todoList = todosRepository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("Todos not found with id: " + uuid));
         Task task = taskMapper.toModel(taskDto);
-        task.setTodoList(todoList);
+        task.setTaskList(todoList);
 
         todoRepo.save(task);
 

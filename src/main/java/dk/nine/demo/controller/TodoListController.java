@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,9 +33,9 @@ public class TodoListController {
         return todosService.getAllTodosLists();
     }
 
-    @GetMapping("/todos/{uuid}")
-    public ResponseEntity<TodoListDto> getTodoListByUuid(@PathVariable UUID uuid) {
-        return new ResponseEntity<TodoListDto>(todosService.getATodos(uuid.toString()), HttpStatus.OK);
+    @GetMapping("/todos/{id}")
+    public ResponseEntity<TodoListDto> getTodoListByUuid(@PathVariable UUID id) {
+        return new ResponseEntity<TodoListDto>(todosService.getATodos(id.toString()), HttpStatus.OK);
     }
 
     @PostMapping("/todos")
@@ -44,10 +45,11 @@ public class TodoListController {
         log.debug("Creation complete {}", todosList);
         return todosList;
     }
-    @PostMapping("/todos/{uuid}/task")
-    public TodoListDto createTodo(@RequestBody TaskDto taskDto, @PathVariable UUID uuid) {
-        log.debug("creating Todo {}, for TodoList: {}", taskDto, uuid);
-        TodoListDto todosList = todosService.createTodo(uuid, taskDto);
+
+    @PostMapping("/todos/{id}/task")
+    public TodoListDto createTodo(@RequestBody TaskDto taskDto, @PathVariable UUID id) {
+        log.debug("creating Todo {}, for TodoList: {}", taskDto, id);
+        TodoListDto todosList = todosService.createTodo(id, taskDto);
         log.debug("Creation complete {}", todosList);
         return todosList;
     }
@@ -55,6 +57,9 @@ public class TodoListController {
 
     @GetMapping("/todos/search/{query}")
     public List<TodoListDto> searchForTodoLists(@PathVariable String query) {
+        if (query.length() <= 2) {
+            return new ArrayList<TodoListDto>();
+        }
         log.debug("searched for {}", query);
         List<TodoListDto> todosListsByTitle = todosService.getTodosListsByTitle(query);
         log.debug("todoLists found [{}]", todosListsByTitle.size());

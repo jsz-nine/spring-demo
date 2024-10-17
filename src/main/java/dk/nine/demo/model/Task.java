@@ -31,7 +31,7 @@ public class Task implements ModelResource<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todos_uuid", nullable = false) // Foreign key column
-    private TodoList todoList; // Reference to Todos
+    private TodoList taskList; // Reference to Todos
 
 
 }
