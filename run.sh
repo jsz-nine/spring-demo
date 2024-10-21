@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Prompt the user to enter the PostgreSQL password
 echo "Please enter the PostgreSQL password:"

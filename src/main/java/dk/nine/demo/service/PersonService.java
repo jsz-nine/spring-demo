@@ -34,15 +34,14 @@ public class PersonService {
                 .toList();
     }
 
-    public PersonDto getPersonById(Long id) {
-        return personRepository.findById(id)
+    public PersonDto getPersonById(Long id) {        return personRepository.findById(id)
                 .map(person -> modelMapper.map(person, PersonDto.class))
                 .orElse(null);
     }
 
     public List<PersonDto> findPersonsByName(String query) {
         return personRepository.findPersonByQuery(query)
-                .stream().map(person -> modelMapper.map(person,PersonDto.class)).collect(Collectors.toList());
+                .stream().map(person -> modelMapper.map(person, PersonDto.class)).collect(Collectors.toList());
     }
 
     public PersonDto createPerson(PersonDto personDto) throws ParseException {
